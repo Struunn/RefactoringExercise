@@ -5,6 +5,38 @@ namespace RefactoringExercise
 {
     internal class Program
     {
+        /// <summary>
+        /// Determines the maximum amount of hashtags
+        /// </summary>
+        /// <param name="userInput">Amount the user wants</param>
+        /// <param name="userChoice">The choice the user made</param>
+        /// <returns>Whether the hashtag amount is not within bounds</returns>
+        static bool MaxHashTag(int userInput, int userChoice)
+        {
+            if ((userChoice == 2 && userInput > 10) || (userChoice == 2 && userInput < 0))
+            {
+                return true;
+            }
+            if ((userChoice == 4 && userInput > 10) || (userChoice == 4 && userInput < 0))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        static bool NumberInput(int userInput, int userChoice)
+        {
+            if (userChoice == 2 && (userInput == 1 || userInput == 2 || userInput == 3 || userInput == 4 || userInput == 5 || userInput == 6))
+            {
+                return false;
+            }
+            if (userChoice == 4 && (userInput == 1 || userInput == 2 || userInput == 3 || userInput == 4 || userInput == 5 || userInput == 6))
+            {
+                return false;
+            }
+            return true;
+        }
+        
         static void Main(string[] args)
         {
 
@@ -17,18 +49,26 @@ namespace RefactoringExercise
             //4- Hantera errors. Informera om fel och/eller skapa kod som inte crashar.
             //5- Ge feedback till användaren. Om den skriver fel ska den få veta varför.
 
-            void WriteResult(int limit, int secondLimit = 0, string text = " # ", string topText = "", bool secondFor = false)
+
+            void WriteResult(int limit, int userChoice, int times = 0, int secondLimit = 0, string text = " # ", string topText = "", bool secondFor = false)
             {
-                Console.WriteLine(topText);
-                for (int i = 0; i < secondLimit; i++)
+                if (NumberInput(times, userChoice) && MaxHashTag(times, userChoice))
                 {
-                    for (int j = 0; j < limit; j++)
+                    Console.WriteLine("Number out of bounds");
+                }
+                else
+                {
+                    Console.WriteLine(topText);
+                    for (int i = 0; i <= secondLimit; i++)
                     {
-                        Console.Write(text);
-                    }
-                    if (secondFor)
-                    {
-                        Console.WriteLine();
+                        for (int j = 0; j < limit; j++)
+                        {
+                            Console.Write(text);
+                        }
+                        if (secondFor)
+                        {
+                            Console.WriteLine();
+                        }
                     }
                 }
             }
@@ -46,35 +86,39 @@ namespace RefactoringExercise
                 switch (answer)
                 {
                     case 1:
-                        WriteResult(6);
+                        WriteResult(6, 1);
                         break;
 
                     case 2:
                         Console.Write("How many hashtags (max 10)? ");
                         times = int.Parse(Console.ReadLine());
-                        WriteResult(times);
+                        WriteResult(times, 2, times);
                         break;
 
                     case 3:
-                        WriteResult(5, 5, "##", secondFor: true);
+                        WriteResult(5, 5, 3, text: "##", secondFor: true);
                         break;
 
                     case 4:
                         Console.Write("How many hashtags (max 10)? ");
                         times = int.Parse(Console.ReadLine());
-                        WriteResult(times, times, "##", secondFor: true);
+                        WriteResult(times, times, 4, text: "##", secondFor: true);
                         break;
 
                     case 5:
-                        WriteResult(17);
-                        WriteResult(17, topText: "\n# Static Border #");
+                        WriteResult(17, 5);
+                        WriteResult(17, 5, topText: "\n# Static Border #");
                         break;
 
                     case 6:
                         Console.WriteLine("Write a text of max 20 characters long:");
                         string innerText = Console.ReadLine();
-                        WriteResult(innerText.Length + 4, text: "#");
-                        WriteResult(innerText.Length + 4, text: "#", topText: "\n# " + innerText + " #");
+                        WriteResult(innerText.Length + 4, 6, text: "#");
+                        WriteResult(innerText.Length + 4, 6, text: "#", topText: "\n# " + innerText + " #");
+                        break;
+
+                    case 0:
+                        stop = true;
                         break;
                 }
 
